@@ -2,13 +2,9 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-import NewsCard from "@/components/features/news-card";
-import NewsFilters from "@/components/pages/news/NewsFilters";
-import {
-  getNewsArchiveMonths,
-  getNewsCategories,
-  getNewsPage,
-} from "@/lib/api/news";
+import EventCard from "@/components/features/event.card";
+import EventsFilters from "@/components/pages/events/EventsFilters";
+import { getEventsArchiveMonths, getEventsPage } from "@/lib/api/events";
 
 interface Props {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -16,8 +12,8 @@ interface Props {
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Новини",
-    description: "Останні новини та оголошення школи.",
+    title: "Події",
+    description: "Актуальні та архівні події школи.",
   };
 }
 
@@ -32,42 +28,32 @@ function parseMonth(value?: string) {
   return { year, month };
 }
 
-function buildPageLink(
-  page: number,
-  filters: { category?: string; month?: string }
-) {
+function buildPageLink(page: number, filters: { month?: string }) {
   const params = new URLSearchParams();
-  if (filters.category) params.set("category", filters.category);
   if (filters.month) params.set("month", filters.month);
   params.set("page", page.toString());
-  return `/news?${params.toString()}`;
+  return `/events?${params.toString()}`;
 }
 
-export default async function NewsPage({ searchParams }: Props) {
+export default async function EventsPage({ searchParams }: Props) {
   const params = await searchParams;
   const pageParam = Array.isArray(params.page) ? params.page[0] : params.page;
-  const categoryParam = Array.isArray(params.category)
-    ? params.category[0]
-    : params.category;
   const monthParam = Array.isArray(params.month) ? params.month[0] : params.month;
 
   const page = Math.max(1, Number(pageParam ?? 1) || 1);
-  const selectedCategory =
-    typeof categoryParam === "string" ? categoryParam : undefined;
   const selectedMonth = typeof monthParam === "string" ? monthParam : undefined;
 
   const { year, month } = parseMonth(selectedMonth);
 
-  const [newsResponse, categories, months] = await Promise.all([
-    getNewsPage({ page, pageSize: 9, category: selectedCategory, year, month }),
-    getNewsCategories(),
-    getNewsArchiveMonths(),
+  const [eventsResponse, months] = await Promise.all([
+    getEventsPage({ page, pageSize: 8, year, month }),
+    getEventsArchiveMonths(),
   ]);
 
-  const posts = newsResponse.data ?? [];
-  const pagination = newsResponse.meta.pagination;
+  const events = eventsResponse.data ?? [];
+  const pagination = eventsResponse.meta.pagination;
   const totalPages = Math.max(1, pagination.pageCount ?? 1);
-  const totalItems = pagination.total ?? posts.length;
+  const totalItems = pagination.total ?? events.length;
 
   const pageStart = Math.max(1, page - 2);
   const pageEnd = Math.min(totalPages, pageStart + 4);
@@ -94,48 +80,39 @@ export default async function NewsPage({ searchParams }: Props) {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <h1 className="font-heading text-3xl md:text-4xl font-black text-[hsl(0_0%_21%)]">
-                Всі новини
+                Події
               </h1>
               <span className="inline-flex items-center rounded-full bg-[hsl(80_30%_93%)] px-3 py-1 text-xs font-semibold text-[hsl(0_0%_40%)]">
-                Новин: {totalItems}
+                {totalItems} подій
               </span>
             </div>
           </div>
 
-          <NewsFilters
-            months={months}
-            categories={categories.map((category) => ({
-              slug: category.slug,
-              name: category.name,
-            }))}
-            selectedMonth={selectedMonth}
-            selectedCategory={selectedCategory}
-          />
+          <EventsFilters months={months} selectedMonth={selectedMonth} />
         </div>
       </section>
 
       <section className="py-10 md:py-14">
         <div className="container space-y-10">
-
-          {posts.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.map((post) => (
-                <NewsCard key={post.id} post={post} />
+          {events.length > 0 ? (
+            <div className="grid md:grid-cols-2 gap-5">
+              {events.map((event, i) => (
+                <EventCard key={event.id} event={event} colorIdx={i} />
               ))}
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] p-10 text-center shadow-card">
               <p className="text-lg font-semibold text-[hsl(0_0%_21%)]">
-                Новин за вибраними фільтрами не знайдено
+                Подій за вибраними фільтрами не знайдено
               </p>
               <p className="mt-2 text-[hsl(0_0%_40%)]">
-                Спробуйте змінити місяць або категорію.
+                Спробуйте змінити місяць.
               </p>
               <Link
-                href="/news"
+                href="/events"
                 className="inline-flex items-center gap-2 text-[hsl(84_55%_45%)] font-semibold hover:underline underline-offset-4 mt-4 cursor-pointer"
               >
-                Скинути фільтри <ArrowRight className="w-4 h-4" />
+                Скинути фільтр <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           )}
@@ -148,7 +125,6 @@ export default async function NewsPage({ searchParams }: Props) {
               <div className="flex flex-wrap items-center gap-2">
                 <Link
                   href={buildPageLink(Math.max(1, page - 1), {
-                    category: selectedCategory,
                     month: selectedMonth,
                   })}
                   className={`px-4 py-2 rounded-xl border text-sm font-semibold transition-colors ${
@@ -163,7 +139,6 @@ export default async function NewsPage({ searchParams }: Props) {
                   <Link
                     key={pageNum}
                     href={buildPageLink(pageNum, {
-                      category: selectedCategory,
                       month: selectedMonth,
                     })}
                     className={`px-4 py-2 rounded-xl border text-sm font-semibold transition-colors ${
@@ -177,7 +152,6 @@ export default async function NewsPage({ searchParams }: Props) {
                 ))}
                 <Link
                   href={buildPageLink(Math.min(totalPages, page + 1), {
-                    category: selectedCategory,
                     month: selectedMonth,
                   })}
                   className={`px-4 py-2 rounded-xl border text-sm font-semibold transition-colors ${

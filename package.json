@@ -11,6 +11,7 @@
   "dependencies": {
     "@strapi/blocks-react-renderer": "^1.0.2",
     "framer-motion": "^12.36.0",
+    "lightgallery": "^2.9.0",
     "lucide-react": "^0.577.0",
     "next": "16.1.6",
     "react": "19.2.3",

@@ -1,10 +1,3 @@
-import React from "react";
-
-/**
- * Parses text and wraps words in [brackets] with a gradient span.
- * @param text The text to format.
- * @returns JSX.Element | (string | JSX.Element)[] | null
- */
 export function formatRichText(text: string | null | undefined) {
   if (!text) return null;
 
@@ -21,5 +14,13 @@ export function formatRichText(text: string | null | undefined) {
       );
     }
     return part;
+  });
+}
+
+export function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString("uk-UA", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 }

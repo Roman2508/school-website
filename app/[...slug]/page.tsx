@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const slugStr = slug.join("/")
+  const slugStr = slug.join("/").replace(/^\/+|\/+$/g, "")
   try {
     const page = await getPageBySlug(slugStr)
     return {
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CmsPage({ params }: Props) {
   const { slug } = await params
-  const slugStr = slug.join("/")
+  const slugStr = slug.join("/").replace(/^\/+|\/+$/g, "")
 
   // getPageBySlug throws on 404 → notFound() redirects to Next.js 404 page
   const page = await getPageBySlug(slugStr).catch(() => notFound())

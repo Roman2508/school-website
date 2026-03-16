@@ -1,9 +1,9 @@
-import type { Metadata } from "next"
-import "./globals.css"
-import { getHeader } from "@/lib/api/header"
-import { getFooter } from "@/lib/api/footer"
-import Header from "@/components/layout/Header"
-import Footer from "@/components/layout/Footer"
+import type { Metadata } from "next";
+import "./globals.css";
+import { getHeader } from "@/lib/api/header";
+import { getFooter } from "@/lib/api/footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: {
@@ -11,18 +11,18 @@ export const metadata: Metadata = {
     template: "%s | Школа",
   },
   description: "Офіційний сайт школи",
-}
+};
 
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   // Fetch layout data on the server — errors are handled gracefully
-  const [header, footer] = await Promise.allSettled([getHeader(), getFooter()])
+  const [header, footer] = await Promise.allSettled([getHeader(), getFooter()]);
 
-  const headerData = header.status === "fulfilled" ? header.value : null
-  const footerData = footer.status === "fulfilled" ? footer.value : null
+  const headerData = header.status === "fulfilled" ? header.value : null;
+  const footerData = footer.status === "fulfilled" ? footer.value : null;
 
   return (
     <html lang="uk">
@@ -32,5 +32,5 @@ export default async function RootLayout({
         {footerData && <Footer data={footerData} />}
       </body>
     </html>
-  )
+  );
 }

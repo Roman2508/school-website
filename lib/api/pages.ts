@@ -16,30 +16,63 @@ const PAGE_POPULATE = [
   "populate[background_image][fields][1]=alternativeText",
   "populate[background_image][fields][2]=width",
   "populate[background_image][fields][3]=height",
-  // parent page chain (3 levels for breadcrumbs)
-  "populate[parent_page][fields][0]=title",
-  "populate[parent_page][fields][1]=slug",
-  "populate[parent_page][populate][parent_page][fields][0]=title",
-  "populate[parent_page][populate][parent_page][fields][1]=slug",
-  "populate[parent_page][populate][parent_page][populate][parent_page][fields][0]=title",
-  "populate[parent_page][populate][parent_page][populate][parent_page][fields][1]=slug",
   // dynamic zones — MUST be * for polymorphic structures (Strapi v5)
   "populate[left_col_blocks][populate]=*",
   "populate[right_col_blocks][populate]=*",
 ].join("&")
 
+async function fetchPageBySlug(
+  slug: string,
+  filter: "$eq" | "$eqi"
+): Promise<Page | null> {
+  const publicationState =
+    process.env.NODE_ENV === "development" ? "preview" : "live"
+  const path = `/pages?filters[slug][${filter}]=${encodeURIComponent(
+    slug
+  )}&${PAGE_POPULATE}&publicationState=${publicationState}`
+  try {
+    const res = await fetchStrapi<StrapiListResponse<Page>>(path)
+    return res.data[0] ?? null
+  } catch (err) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("Strapi pages fetch failed:", path)
+      console.error(err)
+    }
+    throw err
+  }
+}
+
 export async function getPageBySlug(slug: string): Promise<Page> {
-  const res = await fetchStrapi<StrapiListResponse<Page>>(
-    `/pages?filters[slug][$eq]=${encodeURIComponent(slug)}&${PAGE_POPULATE}&publicationState=live`,
-  )
-  const page = res.data[0]
-  if (!page) throw new Error(`Page not found: ${slug}`)
-  return page
+  const candidates = [slug, `/${slug}`].filter(Boolean)
+
+  for (const candidate of candidates) {
+    const page = await fetchPageBySlug(candidate, "$eq")
+    if (page) return page
+  }
+
+  for (const candidate of candidates) {
+    const page = await fetchPageBySlug(candidate, "$eqi")
+    if (page) return page
+  }
+
+  if (process.env.NODE_ENV === "development") {
+    try {
+      const slugs = await getAllPageSlugs()
+      console.error("CMS page not found. Slugs in CMS:", slugs)
+      console.error("CMS page lookup candidates:", candidates)
+    } catch (err) {
+      console.error("Failed to list CMS slugs", err)
+    }
+  }
+
+  throw new Error(`Page not found: ${slug}`)
 }
 
 export async function getAllPageSlugs(): Promise<{ slug: string }[]> {
+  const publicationState =
+    process.env.NODE_ENV === "development" ? "preview" : "live"
   const res = await fetchStrapi<StrapiListResponse<{ slug: string }>>(
-    "/pages?fields[0]=slug&pagination[limit]=200&publicationState=live",
+    `/pages?fields[0]=slug&pagination[limit]=200&publicationState=${publicationState}`,
   )
   return res.data
 }

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Clean domain types for the school website.
  * These wrap the auto-generated types from types/strapi-generated.ts
  * for ergonomic use in React components.
@@ -177,10 +177,13 @@ export interface StuffMember {
   id: number;
   documentId: string;
   name: string;
+  slug: string;
   role?: string | null;
   photo?: StrapiMedia | null;
   phone?: string | null;
   email?: string | null;
+  bio?: unknown;
+  weight?: number;
 }
 
 export interface ContactsSectionData {
@@ -220,6 +223,7 @@ export interface NewsPost {
   date: string;
   category?: Category | null;
   main_photo: StrapiMedia;
+  photos?: StrapiMedia[];
   body?: unknown;
 }
 

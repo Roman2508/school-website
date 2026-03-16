@@ -1,0 +1,109 @@
+﻿import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ArrowLeft, Mail, Phone } from "lucide-react";
+
+import RichTextContent from "@/components/blocks/RichTextContent";
+import { getStaffBySlug } from "@/lib/api/staff";
+import { getStrapiMedia } from "@/lib/strapi";
+
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const member = await getStaffBySlug(slug);
+  if (!member) {
+    return { title: "Вчитель" };
+  }
+  return {
+    title: member.name,
+    description: typeof member.bio === "string" ? member.bio.slice(0, 160) : undefined,
+  };
+}
+
+export default async function TeacherPage({ params }: Props) {
+  const { slug } = await params;
+  const member = await getStaffBySlug(slug);
+
+  if (!member) {
+    notFound();
+  }
+
+  const imageUrl = getStrapiMedia(member.photo?.url);
+
+  return (
+    <section className="py-12 md:py-16">
+      <div className="container">
+        <Link
+          href="/teachers"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[hsl(84_55%_45%)] hover:underline underline-offset-4"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          До всіх працівників
+        </Link>
+
+        <div className="mt-8 grid lg:grid-cols-[2fr_3fr] gap-10 lg:gap-12">
+          <div className="bg-white rounded-3xl border border-[hsl(80_15%_88%)] shadow-card overflow-hidden">
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt={member.photo?.alternativeText ?? member.name}
+                width={600}
+                height={700}
+                className="w-full h-[360px] object-cover"
+                priority
+              />
+            ) : (
+              <div className="w-full h-[360px] bg-[hsl(80_30%_93%)] flex items-center justify-center text-[hsl(84_55%_45%)] text-5xl font-heading font-black">
+                T
+              </div>
+            )}
+          </div>
+
+          <div>
+            <h1 className="font-heading text-3xl md:text-4xl font-black text-[hsl(0_0%_21%)]">
+              {member.name}
+            </h1>
+            {member.role && (
+              <p className="mt-2 text-lg text-[hsl(0_0%_40%)]">{member.role}</p>
+            )}
+
+            <div className="mt-6 space-y-2 text-sm text-[hsl(0_0%_40%)]">
+              {member.email && (
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="hover:text-[hsl(84_55%_45%)] transition-colors"
+                  >
+                    {member.email}
+                  </a>
+                </div>
+              )}
+              {member.phone && (
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  <a
+                    href={`tel:${member.phone}`}
+                    className="hover:text-[hsl(84_55%_45%)] transition-colors"
+                  >
+                    {member.phone}
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {member.bio && (
+              <div className="mt-8">
+                <RichTextContent body={member.bio} />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
