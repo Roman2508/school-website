@@ -1,10 +1,11 @@
-import Image from "next/image";
-import { CheckCircle } from "lucide-react";
-import { getStrapiMedia } from "@/lib/strapi";
-import type { AboutSectionData } from "@/types/strapi";
+import Image from "next/image"
+import { CheckCircle } from "lucide-react"
+import { getStrapiMedia } from "@/lib/strapi"
+import type { AboutSectionData } from "@/types/strapi"
+import { formatRichText } from "@/lib/utils"
 
 export default function AboutSection({ data }: { data: AboutSectionData }) {
-  const imageUrl = getStrapiMedia(data.image?.url);
+  const imageUrl = getStrapiMedia(data.image?.url)
 
   return (
     <section className="py-20 md:py-28 bg-white relative overflow-hidden">
@@ -15,13 +16,16 @@ export default function AboutSection({ data }: { data: AboutSectionData }) {
           {/* Text */}
           <div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[hsl(0_0%_21%)] mb-6 font-heading leading-tight">
-              <span className="text-gradient-primary">{data.title}</span>
+              <span className="text-dark">{formatRichText(data.title)}</span>
             </h2>
 
             <div className="space-y-4 text-[hsl(0_0%_40%)] leading-relaxed text-base md:text-lg mb-8">
-              {data.body.split("\n").filter(Boolean).map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
+              {data.body
+                .split("\n")
+                .filter(Boolean)
+                .map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
             </div>
 
             {data.advantages && data.advantages.length > 0 && (
@@ -51,15 +55,9 @@ export default function AboutSection({ data }: { data: AboutSectionData }) {
                 {(data.image_title || data.image_text) && (
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 pt-16">
                     {data.image_title && (
-                      <p className="text-white font-heading font-bold text-xl">
-                        {data.image_title}
-                      </p>
+                      <p className="text-white font-heading font-bold text-xl">{data.image_title}</p>
                     )}
-                    {data.image_text && (
-                      <p className="text-white/80 text-sm mt-1">
-                        {data.image_text}
-                      </p>
-                    )}
+                    {data.image_text && <p className="text-white/80 text-sm mt-1">{data.image_text}</p>}
                   </div>
                 )}
               </div>
@@ -68,5 +66,5 @@ export default function AboutSection({ data }: { data: AboutSectionData }) {
         </div>
       </div>
     </section>
-  );
+  )
 }

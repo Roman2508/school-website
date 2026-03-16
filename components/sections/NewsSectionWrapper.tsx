@@ -1,19 +1,20 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Calendar, ArrowRight } from "lucide-react";
-import { getStrapiMedia } from "@/lib/strapi";
-import type { NewsFeedData, NewsPost } from "@/types/strapi";
+import Image from "next/image"
+import Link from "next/link"
+import { Calendar, ArrowRight } from "lucide-react"
+import { getStrapiMedia } from "@/lib/strapi"
+import type { NewsFeedData, NewsPost } from "@/types/strapi"
+import { formatRichText } from "@/lib/utils"
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("uk-UA", {
     day: "numeric",
     month: "long",
     year: "numeric",
-  });
+  })
 }
 
 function NewsCard({ post }: { post: NewsPost }) {
-  const imageUrl = getStrapiMedia(post.main_photo?.url);
+  const imageUrl = getStrapiMedia(post.main_photo?.url)
 
   return (
     <article className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] overflow-hidden shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 group cursor-pointer">
@@ -49,16 +50,16 @@ function NewsCard({ post }: { post: NewsPost }) {
         </div>
       </Link>
     </article>
-  );
+  )
 }
 
 interface Props {
-  feed: NewsFeedData;
-  posts: NewsPost[];
+  feed: NewsFeedData
+  posts: NewsPost[]
 }
 
 export default function NewsSectionWrapper({ feed, posts }: Props) {
-  if (posts.length === 0) return null;
+  if (posts.length === 0) return null
 
   return (
     <section id="news" className="py-20 md:py-28">
@@ -66,11 +67,9 @@ export default function NewsSectionWrapper({ feed, posts }: Props) {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black mb-3 text-[hsl(0_0%_21%)]">
-              <span className="text-gradient-primary">{feed.title}</span>
+              <span className="text-dark">{formatRichText(feed.title)}</span>
             </h2>
-            {feed.subtitle && (
-              <p className="text-lg text-[hsl(0_0%_40%)] max-w-xl">{feed.subtitle}</p>
-            )}
+            {feed.subtitle && <p className="text-lg text-[hsl(0_0%_40%)] max-w-xl">{feed.subtitle}</p>}
           </div>
           <Link
             href="/news"
@@ -87,5 +86,5 @@ export default function NewsSectionWrapper({ feed, posts }: Props) {
         </div>
       </div>
     </section>
-  );
+  )
 }

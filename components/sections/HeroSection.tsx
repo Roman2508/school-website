@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { getStrapiMedia } from "@/lib/strapi"
 import type { HeroSectionData } from "@/types/strapi"
+import { formatRichText } from "@/lib/utils"
 
 export default function HeroSection({ data }: { data: HeroSectionData }) {
   const imageUrl = getStrapiMedia(data.image?.url)
@@ -14,12 +15,12 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
       <div className="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-[hsl(84_40%_90%)] opacity-50 blur-3xl pointer-events-none" />
 
       <div className="container relative z-10 py-4">
-      {/* <div className="container relative z-10 py-16 md:py-24"> */}
+        {/* <div className="container relative z-10 py-16 md:py-24"> */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Text */}
           <div>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] mb-6 text-[hsl(0_0%_21%)]">
-              {data.title}
+              {formatRichText(data.title)}
             </h1>
 
             {data.subtitle && (

@@ -20,7 +20,7 @@ export default async function RootLayout({
 }>) {
   // Fetch layout data on the server — errors are handled gracefully
   const [header, footer] = await Promise.allSettled([getHeader(), getFooter()])
-  console.log(header, footer)
+
   const headerData = header.status === "fulfilled" ? header.value : null
   const footerData = footer.status === "fulfilled" ? footer.value : null
 

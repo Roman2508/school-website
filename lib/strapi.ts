@@ -31,11 +31,14 @@ export async function fetchStrapi<T>(
     headers["Authorization"] = `Bearer ${STRAPI_API_TOKEN}`;
   }
 
+  const isDev = process.env.NODE_ENV === "development"
+
   const response = await fetch(url, {
     ...options,
     headers,
-    next: { revalidate: 60 }, // ISR: revalidate every 60 seconds
-  });
+    next: { revalidate: isDev ? 0 : 60 }, // No cache in dev, 60s ISR in prod
+  })
+
 
   if (!response.ok) {
     const error = await response.text();

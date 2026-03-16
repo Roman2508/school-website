@@ -252,3 +252,72 @@ export interface StrapiListResponse<T> {
     };
   };
 }
+
+// ─── Page dynamic zone block types ───────────────
+
+export interface SharedRichText {
+  __component: "shared.rich-text";
+  id: number;
+  body?: string | null;
+}
+
+export interface SharedButtonLink {
+  __component: "shared.button-link";
+  id: number;
+  text: string;
+  link: string;
+  size: "full" | "auto";
+  align: "left" | "center" | "right";
+}
+
+export interface SharedMedia {
+  __component: "shared.media";
+  id: number;
+  file: StrapiMedia;
+}
+
+export interface SharedAccordionItem {
+  id: number;
+  title: string;
+  body: unknown; // Strapi Blocks JSON
+  default_open: boolean;
+}
+
+export interface SharedAccordion {
+  __component: "shared.accordion";
+  id: number;
+  title: string;
+  multiply_open: boolean;
+  items?: SharedAccordionItem[];
+}
+
+export type DynamicBlock =
+  | SharedRichText
+  | SharedButtonLink
+  | SharedMedia
+  | SharedAccordion;
+
+// ─── Page ────────────────────────────────────────
+
+/** Lightweight parent reference used for breadcrumbs (3 levels deep) */
+export interface PageParent {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  parent_page?: PageParent | null;
+}
+
+export interface Page {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  subtitle?: string | null;
+  background_image?: StrapiMedia | null;
+  layout: "col-12" | "col-6-6" | "col-8-4" | "col-9-3";
+  left_col_blocks: DynamicBlock[];
+  right_col_blocks?: DynamicBlock[] | null;
+  reverse_cols_on_mobile: boolean;
+  parent_page?: PageParent | null;
+}

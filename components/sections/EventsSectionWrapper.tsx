@@ -1,26 +1,31 @@
-import Link from "next/link";
-import { MapPin, Clock, ArrowRight } from "lucide-react";
-import type { EventsFeedData, EventPost } from "@/types/strapi";
+import Link from "next/link"
+import { MapPin, Clock, ArrowRight } from "lucide-react"
+import type { EventsFeedData, EventPost } from "@/types/strapi"
+import { formatRichText } from "@/lib/utils"
 
 const MONTH_SHORT: Record<number, string> = {
-  0: "СІЧ", 1: "ЛЮТ", 2: "БЕР", 3: "КВІ", 4: "ТРА", 5: "ЧЕР",
-  6: "ЛИП", 7: "СЕР", 8: "ВЕР", 9: "ЖОВ", 10: "ЛИС", 11: "ГРУ",
-};
+  0: "СІЧ",
+  1: "ЛЮТ",
+  2: "БЕР",
+  3: "КВІ",
+  4: "ТРА",
+  5: "ЧЕР",
+  6: "ЛИП",
+  7: "СЕР",
+  8: "ВЕР",
+  9: "ЖОВ",
+  10: "ЛИС",
+  11: "ГРУ",
+}
 
-const CARD_COLORS = [
-  "bg-[hsl(84_55%_45%)]",
-  "bg-[hsl(50_100%_50%)]",
-  "bg-[hsl(45_99%_47%)]",
-  "bg-[hsl(84_55%_38%)]",
-];
+const CARD_COLORS = ["bg-[hsl(84_55%_45%)]", "bg-[hsl(50_100%_50%)]", "bg-[hsl(45_99%_47%)]", "bg-[hsl(84_55%_38%)]"]
 
 function EventCard({ event, colorIdx }: { event: EventPost; colorIdx: number }) {
-  const date = new Date(event.date);
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = MONTH_SHORT[date.getMonth()];
+  const date = new Date(event.date)
+  const day = date.getDate().toString().padStart(2, "0")
+  const month = MONTH_SHORT[date.getMonth()]
 
-  const formatTime = (dt: string) =>
-    new Date(dt).toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit" });
+  const formatTime = (dt: string) => new Date(dt).toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit" })
 
   return (
     <div className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] p-5 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 group cursor-pointer flex gap-5">
@@ -49,16 +54,16 @@ function EventCard({ event, colorIdx }: { event: EventPost; colorIdx: number }) 
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 interface Props {
-  feed: EventsFeedData;
-  events: EventPost[];
+  feed: EventsFeedData
+  events: EventPost[]
 }
 
 export default function EventsSectionWrapper({ feed, events }: Props) {
-  if (events.length === 0) return null;
+  if (events.length === 0) return null
 
   return (
     <section id="events" className="py-20 md:py-28 bg-[hsl(80_30%_93%/0.3)]">
@@ -66,11 +71,9 @@ export default function EventsSectionWrapper({ feed, events }: Props) {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black mb-3 text-[hsl(0_0%_21%)]">
-              <span className="text-gradient-primary">{feed.title}</span>
+              <span className="text-dark">{formatRichText(feed.title)}</span>
             </h2>
-            {feed.subtitle && (
-              <p className="text-lg text-[hsl(0_0%_40%)] max-w-xl">{feed.subtitle}</p>
-            )}
+            {feed.subtitle && <p className="text-lg text-[hsl(0_0%_40%)] max-w-xl">{feed.subtitle}</p>}
           </div>
           <Link
             href="/events"
@@ -87,5 +90,5 @@ export default function EventsSectionWrapper({ feed, events }: Props) {
         </div>
       </div>
     </section>
-  );
+  )
 }
