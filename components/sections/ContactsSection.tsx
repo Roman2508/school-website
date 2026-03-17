@@ -1,7 +1,12 @@
 import Image from "next/image";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { getStrapiMedia } from "@/lib/strapi";
-import type { ContactsSectionData, StuffMember, HomeInfoItem } from "@/types/strapi";
+import type {
+  ContactsSectionData,
+  StuffMember,
+  HomeInfoItem,
+} from "@/types/strapi";
+import { formatRichText } from "@/lib/utils";
 
 function getInitials(name: string): string {
   return name
@@ -38,7 +43,9 @@ function PersonCard({ member, idx }: { member: StuffMember; idx: number }) {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-white font-bold text-sm">{getInitials(member.name)}</span>
+              <span className="text-white font-bold text-sm">
+                {getInitials(member.name)}
+              </span>
             )}
           </div>
         </div>
@@ -48,7 +55,9 @@ function PersonCard({ member, idx }: { member: StuffMember; idx: number }) {
           {member.name}
         </h4>
         {member.role && (
-          <p className="text-xs text-[hsl(84_55%_45%)] font-semibold mb-4">{member.role}</p>
+          <p className="text-xs text-[hsl(84_55%_45%)] font-semibold mb-4">
+            {member.role}
+          </p>
         )}
         <div className="space-y-2">
           {member.phone && (
@@ -93,14 +102,22 @@ function InfoItem({ item }: { item: HomeInfoItem }) {
         )}
       </div>
       <div>
-        <p className="font-semibold text-[hsl(0_0%_21%)] text-sm">{item.label}</p>
-        <p className="text-[hsl(0_0%_40%)] text-sm mt-0.5 whitespace-pre-line">{item.value}</p>
+        <p className="font-semibold text-[hsl(0_0%_21%)] text-sm">
+          {item.label}
+        </p>
+        <p className="text-[hsl(0_0%_40%)] text-sm mt-0.5 whitespace-pre-line">
+          {item.value}
+        </p>
       </div>
     </div>
   );
 }
 
-export default function ContactsSection({ data }: { data: ContactsSectionData }) {
+export default function ContactsSection({
+  data,
+}: {
+  data: ContactsSectionData;
+}) {
   return (
     <section id="contacts" className="py-20 md:py-28 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[hsl(80_30%_93%/0.4)] via-white to-white pointer-events-none" />
@@ -111,10 +128,12 @@ export default function ContactsSection({ data }: { data: ContactsSectionData })
         {/* Header */}
         <div className="text-center mb-14">
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black mb-4 text-[hsl(0_0%_21%)]">
-            <span className="text-gradient-primary">{data.title}</span>
+            {formatRichText(data.title)}
           </h2>
           {data.subtitle && (
-            <p className="text-[hsl(0_0%_40%)] text-lg max-w-xl mx-auto">{data.subtitle}</p>
+            <p className="text-[hsl(0_0%_40%)] text-lg max-w-xl mx-auto">
+              {data.subtitle}
+            </p>
           )}
         </div>
 

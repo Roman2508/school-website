@@ -6,14 +6,14 @@ import type { FooterData, FooterInfoItem } from "@/types/strapi";
 function ContactItem({ item }: { item: FooterInfoItem }) {
   const iconUrl = getStrapiMedia(item.icon?.url);
   return (
-    <li className="flex items-start gap-3 text-sm text-white/70">
+    <li className="flex items-center gap-3 text-sm text-white/70">
       {iconUrl ? (
         <Image
           src={iconUrl}
           alt={item.icon?.alternativeText ?? ""}
-          width={16}
-          height={16}
-          className="w-4 h-4 mt-0.5 object-contain opacity-70 shrink-0"
+          width={20}
+          height={20}
+          className="w-5 h-5 mt-0.5 object-contain opacity-70 shrink-0"
         />
       ) : (
         <span className="w-1.5 h-1.5 rounded-full bg-white/40 mt-2 shrink-0" />
@@ -30,13 +30,13 @@ export default function Footer({ data }: { data: FooterData }) {
   const logoUrl = getStrapiMedia(data.logo?.url);
 
   return (
-    <footer className="bg-[hsl(0_0%_21%)] py-16">
+    <footer className="bg-[hsl(0_0%_21%)] pt-16 pb-8">
       <div className="container">
         {/* Main grid */}
         <div
           className={`grid gap-10 mb-12 ${
             data.nav_columns && data.nav_columns.length > 0
-              ? "md:grid-cols-[auto_1fr_auto] lg:grid-cols-[280px_1fr_280px]"
+              ? "grid-cols-1 lg:grid-cols-[320px_1fr_280px]"
               : "md:grid-cols-2"
           }`}
         >
@@ -47,21 +47,23 @@ export default function Footer({ data }: { data: FooterData }) {
                 <Image
                   src={logoUrl}
                   alt={data.logo?.alternativeText ?? "Логотип"}
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 object-contain"
+                  width={80}
+                  height={80}
+                  className="object-contain"
                 />
               ) : (
                 <div className="w-10 h-10 rounded-xl bg-[hsl(84_55%_45%)] flex items-center justify-center">
-                  <span className="text-white font-heading font-black text-xl">Ш</span>
+                  <span className="text-white font-heading font-black text-xl">
+                    Ш
+                  </span>
                 </div>
               )}
-              <span className="font-heading font-bold text-lg text-white leading-tight">
-                {data.title}
-              </span>
             </div>
+            <h4 className="font-heading font-bold text-lg text-white leading-tight mb-2">
+              {data.title}
+            </h4>
             {data.subtitle && (
-              <p className="text-sm text-white/60 leading-relaxed max-w-xs">
+              <p className="text-base text-white/60 leading-relaxed max-w-xs">
                 {data.subtitle}
               </p>
             )}
@@ -74,8 +76,8 @@ export default function Footer({ data }: { data: FooterData }) {
                 data.nav_columns.length === 1
                   ? ""
                   : data.nav_columns.length === 2
-                  ? "sm:grid-cols-2"
-                  : "sm:grid-cols-2 lg:grid-cols-3"
+                    ? "sm:grid-cols-2"
+                    : "sm:grid-cols-2 lg:grid-cols-3"
               }`}
             >
               {data.nav_columns.map((col) => (

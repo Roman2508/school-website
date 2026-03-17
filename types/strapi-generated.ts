@@ -2818,9 +2818,10 @@ export interface components {
         HeaderRequest: {
             data: {
                 title?: string;
-                subtitle?: unknown;
+                subtitle?: string;
                 /** @example string or id */
                 logo: number | string;
+                announcement_bar_text?: string;
                 navigation: components["schemas"]["HeaderSubmenu1Component"][];
                 social?: components["schemas"]["HeaderSocialComponent"][];
                 locale?: string;
@@ -2842,7 +2843,7 @@ export interface components {
             id?: string | number;
             documentId?: string;
             title?: string;
-            subtitle?: unknown;
+            subtitle?: string;
             logo: {
                 id?: string | number;
                 documentId?: string;
@@ -3060,6 +3061,7 @@ export interface components {
                     documentId?: string;
                 }[];
             };
+            announcement_bar_text?: string;
             navigation: components["schemas"]["HeaderSubmenu1Component"][];
             social?: components["schemas"]["HeaderSocialComponent"][];
             /** Format: date-time */
@@ -3081,7 +3083,7 @@ export interface components {
                 id?: string | number;
                 documentId?: string;
                 title?: string;
-                subtitle?: unknown;
+                subtitle?: string;
                 logo?: {
                     id?: string | number;
                     documentId?: string;
@@ -3130,6 +3132,7 @@ export interface components {
                         documentId?: string;
                     }[];
                 };
+                announcement_bar_text?: string;
                 navigation?: components["schemas"]["HeaderSubmenu1Component"][];
                 social?: components["schemas"]["HeaderSocialComponent"][];
                 /** Format: date-time */
