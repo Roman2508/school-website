@@ -1,23 +1,23 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { ChevronRight, Home } from "lucide-react";
-import { motion } from "framer-motion";
-import type { PageParent } from "@/types/strapi";
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { ChevronRight, Home } from 'lucide-react'
+
+import type { PageParent } from '@/types/strapi'
 
 interface Props {
-  currentTitle: string;
-  parent?: PageParent | null;
+  currentTitle: string
+  parent?: PageParent | null
 }
 
-/** Recursively builds the ancestor chain from deepest parent to root */
 function buildChain(node: PageParent | null | undefined): PageParent[] {
-  if (!node) return [];
-  return [...buildChain(node.parent_page), node];
+  if (!node) return []
+  return [...buildChain(node.parent_page), node]
 }
 
 export default function Breadcrumbs({ currentTitle, parent }: Props) {
-  const chain = buildChain(parent);
+  const chain = buildChain(parent)
 
   return (
     <motion.nav
@@ -27,12 +27,9 @@ export default function Breadcrumbs({ currentTitle, parent }: Props) {
       aria-label="Хлібні крихти"
       className="flex items-center gap-1.5 flex-wrap text-sm text-primary-foreground/70"
     >
-      <Link
-        href="/"
-        className="flex items-center gap-1 hover:text-primary-foreground transition-colors"
-      >
+      <Link href="/" className="flex items-center gap-1 hover:text-primary-foreground transition-colors">
         <Home className="w-3.5 h-3.5" />
-        <span>Головна</span>
+        <span className="text-[11px] md:text-sm lg:text-[15px]">Головна</span>
       </Link>
 
       {chain.map((node) => (
@@ -40,7 +37,7 @@ export default function Breadcrumbs({ currentTitle, parent }: Props) {
           <ChevronRight className="w-3.5 h-3.5 opacity-60" />
           <Link
             href={`/${node.slug}`}
-            className="hover:text-primary-foreground transition-colors"
+            className="text-[11px] md:text-sm lg:text-[15px] hover:text-primary-foreground transition-colors"
           >
             {node.title}
           </Link>
@@ -49,8 +46,10 @@ export default function Breadcrumbs({ currentTitle, parent }: Props) {
 
       <span className="flex items-center gap-1.5">
         <ChevronRight className="w-3.5 h-3.5 opacity-60" />
-        <span className="text-primary-foreground font-semibold">{currentTitle}</span>
+        <span className="text-[11px] md:text-sm lg:text-[15px] text-primary-foreground font-semibold">
+          {currentTitle}
+        </span>
       </span>
     </motion.nav>
-  );
+  )
 }

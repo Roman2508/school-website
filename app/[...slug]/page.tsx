@@ -1,9 +1,9 @@
-import type { Metadata } from "next"
-import { notFound } from "next/navigation"
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
-import PageHero from "@/components/pages/PageHero"
-import PageLayout from "@/components/pages/PageLayout"
-import { getPageBySlug, getAllPageSlugs } from "@/lib/api/pages"
+import PageHero from '@/components/pages/PageHero'
+import PageLayout from '@/components/pages/PageLayout'
+import { getPageBySlug, getAllPageSlugs } from '@/lib/api/pages'
 
 interface Props {
   params: Promise<{ slug: string[] }>
@@ -21,7 +21,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const slugStr = slug.join("/").replace(/^\/+|\/+$/g, "")
+  const slugStr = slug.join('/').replace(/^\/+|\/+$/g, '')
   try {
     const page = await getPageBySlug(slugStr)
     return {
@@ -29,13 +29,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: page.subtitle ?? undefined,
     }
   } catch {
-    return { title: "Сторінка" }
+    return { title: 'Сторінка' }
   }
 }
 
 export default async function CmsPage({ params }: Props) {
   const { slug } = await params
-  const slugStr = slug.join("/").replace(/^\/+|\/+$/g, "")
+  const slugStr = slug.join('/').replace(/^\/+|\/+$/g, '')
 
   // getPageBySlug throws on 404 → notFound() redirects to Next.js 404 page
   const page = await getPageBySlug(slugStr).catch(() => notFound())
@@ -48,6 +48,7 @@ export default async function CmsPage({ params }: Props) {
         background_image={page.background_image}
         parent_page={page.parent_page}
       />
+
       <PageLayout
         layout={page.layout}
         leftBlocks={page.left_col_blocks ?? []}

@@ -1,46 +1,43 @@
-﻿import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, Tag } from "lucide-react";
+﻿import Link from 'next/link'
+import Image from 'next/image'
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { ArrowLeft, Calendar, Tag } from 'lucide-react'
 
-import ArchiveSelect from "@/components/pages/news/ArchiveSelect";
-import NewsGallery from "@/components/pages/news/NewsGallery";
-import RichTextContent from "@/components/blocks/RichTextContent";
-import { getLatestNews, getNewsArchiveMonths, getNewsBySlug } from "@/lib/api/news";
-import { formatDate } from "@/lib/utils";
-import { getStrapiMedia } from "@/lib/strapi";
+import { formatDate } from '@/lib/utils'
+import { getStrapiMedia } from '@/lib/strapi'
+import NewsGallery from '@/components/pages/news/NewsGallery'
+import RichTextContent from '@/components/blocks/RichTextContent'
+import ArchiveSelect from '@/components/pages/news/ArchiveSelect'
+import { getLatestNews, getNewsArchiveMonths, getNewsBySlug } from '@/lib/api/news'
 
 interface Props {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const post = await getNewsBySlug(slug);
+  const { slug } = await params
+  const post = await getNewsBySlug(slug)
   if (!post) {
-    return { title: "Новина" };
+    return { title: 'Новина' }
   }
   return {
     title: post.title,
-    description: typeof post.body === "string" ? post.body.slice(0, 160) : undefined,
-  };
+    description: typeof post.body === 'string' ? post.body.slice(0, 160) : undefined,
+  }
 }
 
 export default async function NewsPostPage({ params }: Props) {
-  const { slug } = await params;
-  const post = await getNewsBySlug(slug);
+  const { slug } = await params
+  const post = await getNewsBySlug(slug)
 
   if (!post) {
-    notFound();
+    notFound()
   }
 
-  const [latestNews, archiveMonths] = await Promise.all([
-    getLatestNews(5),
-    getNewsArchiveMonths(),
-  ]);
+  const [latestNews, archiveMonths] = await Promise.all([getLatestNews(5), getNewsArchiveMonths()])
 
-  const imageUrl = getStrapiMedia(post.main_photo?.url);
+  const imageUrl = getStrapiMedia(post.main_photo?.url)
 
   return (
     <section className="py-12 md:py-16">
@@ -76,7 +73,7 @@ export default async function NewsPostPage({ params }: Props) {
                 </div>
               )}
 
-              <h1 className="mt-4 font-heading text-3xl md:text-4xl lg:text-5xl font-black text-[hsl(0_0%_21%)]">
+              <h1 className="my-6 font-heading text-2xl md:text-3xl xl:text-4xl font-black text-[hsl(0_0%_21%)]">
                 {post.title}
               </h1>
 
@@ -97,21 +94,13 @@ export default async function NewsPostPage({ params }: Props) {
             )}
           </article>
 
-          <aside className="space-y-6 lg:sticky lg:top-24 h-fit">
+          <aside className="space-y-6 lg:sticky lg:top-34 h-fit">
             <div className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] p-5 shadow-card">
-              <h2 className="font-heading text-xl font-black text-[hsl(0_0%_21%)] mb-4">
-                Останні новини
-              </h2>
+              <h2 className="font-heading text-xl font-black text-[hsl(0_0%_21%)] mb-4">Останні новини</h2>
               <div className="space-y-4">
                 {latestNews.map((news) => (
-                  <Link
-                    key={news.id}
-                    href={`/news/${news.slug}`}
-                    className="block group"
-                  >
-                    <p className="text-sm text-[hsl(0_0%_40%)]">
-                      {formatDate(news.date)}
-                    </p>
+                  <Link key={news.id} href={`/news/${news.slug}`} className="block group">
+                    <p className="text-sm text-[hsl(0_0%_40%)]">{formatDate(news.date)}</p>
                     <p className="mt-1 font-semibold text-[hsl(0_0%_21%)] group-hover:text-[hsl(84_55%_45%)] transition-colors line-clamp-2">
                       {news.title}
                     </p>
@@ -121,14 +110,12 @@ export default async function NewsPostPage({ params }: Props) {
             </div>
 
             <div className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] p-5 shadow-card">
-              <h2 className="font-heading text-xl font-black text-[hsl(0_0%_21%)] mb-4">
-                Архів за місяцями
-              </h2>
+              <h2 className="font-heading text-xl font-black text-[hsl(0_0%_21%)] mb-4">Архів новин</h2>
               <ArchiveSelect months={archiveMonths} />
             </div>
           </aside>
         </div>
       </div>
     </section>
-  );
+  )
 }

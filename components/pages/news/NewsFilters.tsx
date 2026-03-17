@@ -1,63 +1,55 @@
-﻿"use client";
+﻿'use client'
 
-import { useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Filter } from "lucide-react";
+import { useMemo } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { Filter } from 'lucide-react'
 
-import Select from "@/components/ui/Select";
+import Select from '@/components/ui/Select'
 
 interface MonthOption {
-  value: string;
-  label: string;
+  value: string
+  label: string
 }
 
 interface CategoryOption {
-  slug: string;
-  name: string;
+  slug: string
+  name: string
 }
 
 interface Props {
-  months: MonthOption[];
-  categories: CategoryOption[];
-  selectedMonth?: string;
-  selectedCategory?: string;
+  months: MonthOption[]
+  categories: CategoryOption[]
+  selectedMonth?: string
+  selectedCategory?: string
 }
 
-export default function NewsFilters({
-  months,
-  categories,
-  selectedMonth,
-  selectedCategory,
-}: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+export default function NewsFilters({ months, categories, selectedMonth, selectedCategory }: Props) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
-  const baseParams = useMemo(
-    () => new URLSearchParams(searchParams.toString()),
-    [searchParams]
-  );
+  const baseParams = useMemo(() => new URLSearchParams(searchParams.toString()), [searchParams])
 
   const updateParam = (key: string, value: string) => {
-    const next = new URLSearchParams(baseParams);
+    const next = new URLSearchParams(baseParams)
     if (value) {
-      next.set(key, value);
+      next.set(key, value)
     } else {
-      next.delete(key);
+      next.delete(key)
     }
-    next.delete("page");
-    const qs = next.toString();
-    router.push(qs ? `${pathname}?${qs}` : pathname);
-  };
+    next.delete('page')
+    const qs = next.toString()
+    router.push(qs ? `${pathname}?${qs}` : pathname)
+  }
 
   const clearFilters = () => {
-    const next = new URLSearchParams(baseParams);
-    next.delete("month");
-    next.delete("category");
-    next.delete("page");
-    const qs = next.toString();
-    router.push(qs ? `${pathname}?${qs}` : pathname);
-  };
+    const next = new URLSearchParams(baseParams)
+    next.delete('month')
+    next.delete('category')
+    next.delete('page')
+    const qs = next.toString()
+    router.push(qs ? `${pathname}?${qs}` : pathname)
+  }
 
   return (
     <div className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] p-5 md:p-6 shadow-card">
@@ -82,7 +74,7 @@ export default function NewsFilters({
             placeholder="Всі місяці"
             options={months}
             value={selectedMonth}
-            onChange={(value) => updateParam("month", value)}
+            onChange={(value) => updateParam('month', value)}
             fullWidth
           />
 
@@ -94,11 +86,11 @@ export default function NewsFilters({
               label: category.name,
             }))}
             value={selectedCategory}
-            onChange={(value) => updateParam("category", value)}
+            onChange={(value) => updateParam('category', value)}
             fullWidth
           />
         </div>
       </div>
     </div>
-  );
+  )
 }

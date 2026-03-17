@@ -1,16 +1,17 @@
-"use client";
+'use client'
 
-import ReactMarkdown from "react-markdown";
-import { motion } from "framer-motion";
-import type { SharedRichText } from "@/types/strapi";
+import { motion } from 'framer-motion'
+
+import RichTextContent from './RichTextContent'
+import type { SharedRichText } from '@/types/strapi'
 
 interface Props {
-  block: SharedRichText;
-  index?: number;
+  block: SharedRichText
+  index?: number
 }
 
 export default function RichTextBlock({ block, index = 0 }: Props) {
-  if (!block.body) return null;
+  if (!block.body) return null
 
   return (
     <motion.div
@@ -23,7 +24,7 @@ export default function RichTextBlock({ block, index = 0 }: Props) {
                  prose-a:text-primary prose-a:no-underline hover:prose-a:underline
                  prose-strong:text-foreground prose-li:marker:text-primary"
     >
-      <ReactMarkdown>{block.body}</ReactMarkdown>
+      <RichTextContent body={block.body} />
     </motion.div>
-  );
+  )
 }

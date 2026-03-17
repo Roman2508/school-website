@@ -1,37 +1,38 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { BlocksRenderer } from "@strapi/blocks-react-renderer";
-import type { SharedAccordion } from "@/types/strapi";
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { BlocksRenderer } from '@strapi/blocks-react-renderer'
+import type { SharedAccordion } from '@/types/strapi'
+import RichTextContent from './RichTextContent'
 
 interface Props {
-  block: SharedAccordion;
-  index?: number;
+  block: SharedAccordion
+  index?: number
 }
 
 export default function AccordionBlock({ block, index = 0 }: Props) {
   // Track open items; init from default_open flags
   const [openSet, setOpenSet] = useState<Set<number>>(() => {
-    const s = new Set<number>();
+    const s = new Set<number>()
     block.items?.forEach((item, i) => {
-      if (item.default_open) s.add(i);
-    });
-    return s;
-  });
+      if (item.default_open) s.add(i)
+    })
+    return s
+  })
 
   const toggle = (i: number) => {
     setOpenSet((prev) => {
-      const next = new Set(prev);
+      const next = new Set(prev)
       if (next.has(i)) {
-        next.delete(i);
+        next.delete(i)
       } else {
-        if (!block.multiply_open) next.clear();
-        next.add(i);
+        if (!block.multiply_open) next.clear()
+        next.add(i)
       }
-      return next;
-    });
-  };
+      return next
+    })
+  }
 
   return (
     <motion.div
@@ -42,19 +43,17 @@ export default function AccordionBlock({ block, index = 0 }: Props) {
       className="space-y-1"
     >
       {block.title && (
-        <h3 className="font-heading font-black text-xl md:text-2xl text-foreground mb-4">
-          {block.title}
-        </h3>
+        <h3 className="font-heading font-black text-xl md:text-2xl text-center text-foreground mb-8">{block.title}</h3>
       )}
 
       <div className="space-y-3">
         {block.items?.map((item, i) => {
-          const isOpen = openSet.has(i);
+          const isOpen = openSet.has(i)
           return (
             <div
               key={item.id ?? i}
               className={`bg-card rounded-2xl border border-border overflow-hidden transition-shadow duration-200 ${
-                isOpen ? "shadow-card-hover" : "shadow-card"
+                isOpen ? 'shadow-card-hover' : 'shadow-card'
               }`}
             >
               <button
@@ -79,23 +78,26 @@ export default function AccordionBlock({ block, index = 0 }: Props) {
                   <motion.div
                     key="content"
                     initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
+                    animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
                     className="overflow-hidden"
                   >
-                    <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed
+                    <div
+                      className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed
                                     prose prose-sm prose-green max-w-none
-                                    prose-a:text-primary prose-strong:text-foreground">
-                      <BlocksRenderer content={item.body as any} />
+                                    prose-a:text-primary prose-strong:text-foreground"
+                    >
+                      <RichTextContent body={item.body as any} />
+                      {/* <BlocksRenderer content={item.body as any} /> */}
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
-          );
+          )
         })}
       </div>
     </motion.div>
-  );
+  )
 }

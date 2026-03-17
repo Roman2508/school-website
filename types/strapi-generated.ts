@@ -3996,6 +3996,8 @@ export interface components {
                 subtitle?: string;
                 /** @example string or id */
                 background_image?: number | string;
+                /** @example string or id */
+                parent_page?: number | string;
                 /** @enum {string} */
                 layout: "col-12" | "col-6-6" | "col-8-4" | "col-9-3";
                 left_col_blocks: (components["schemas"]["SharedRichTextComponent"] | components["schemas"]["SharedButtonLinkComponent"] | components["schemas"]["SharedMediaComponent"] | components["schemas"]["SharedAccordionComponent"])[];
@@ -4239,27 +4241,7 @@ export interface components {
                     documentId?: string;
                 }[];
             };
-            /** @enum {string} */
-            layout: "col-12" | "col-6-6" | "col-8-4" | "col-9-3";
-            left_col_blocks: (components["schemas"]["SharedRichTextComponent"] | components["schemas"]["SharedButtonLinkComponent"] | components["schemas"]["SharedMediaComponent"] | components["schemas"]["SharedAccordionComponent"])[];
-            right_col_blocks?: (components["schemas"]["SharedRichTextComponent"] | components["schemas"]["SharedButtonLinkComponent"] | components["schemas"]["SharedMediaComponent"] | components["schemas"]["SharedAccordionComponent"])[];
-            reverse_cols_on_mobile: boolean;
-            /** Format: date-time */
-            createdAt?: string;
-            /** Format: date-time */
-            updatedAt?: string;
-            /** Format: date-time */
-            publishedAt?: string;
-            createdBy?: {
-                id?: string | number;
-                documentId?: string;
-            };
-            updatedBy?: {
-                id?: string | number;
-                documentId?: string;
-            };
-            locale?: string;
-            localizations?: {
+            parent_page?: {
                 id?: string | number;
                 documentId?: string;
                 title?: string;
@@ -4313,6 +4295,10 @@ export interface components {
                         documentId?: string;
                     }[];
                 };
+                parent_page?: {
+                    id?: string | number;
+                    documentId?: string;
+                };
                 /** @enum {string} */
                 layout?: "col-12" | "col-6-6" | "col-8-4" | "col-9-3";
                 left_col_blocks?: (components["schemas"]["SharedRichTextComponent"] | components["schemas"]["SharedButtonLinkComponent"] | components["schemas"]["SharedMediaComponent"] | components["schemas"]["SharedAccordionComponent"])[];
@@ -4337,6 +4323,30 @@ export interface components {
                     id?: string | number;
                     documentId?: string;
                 }[];
+            };
+            /** @enum {string} */
+            layout: "col-12" | "col-6-6" | "col-8-4" | "col-9-3";
+            left_col_blocks: (components["schemas"]["SharedRichTextComponent"] | components["schemas"]["SharedButtonLinkComponent"] | components["schemas"]["SharedMediaComponent"] | components["schemas"]["SharedAccordionComponent"])[];
+            right_col_blocks?: (components["schemas"]["SharedRichTextComponent"] | components["schemas"]["SharedButtonLinkComponent"] | components["schemas"]["SharedMediaComponent"] | components["schemas"]["SharedAccordionComponent"])[];
+            reverse_cols_on_mobile: boolean;
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            /** Format: date-time */
+            publishedAt?: string;
+            createdBy?: {
+                id?: string | number;
+                documentId?: string;
+            };
+            updatedBy?: {
+                id?: string | number;
+                documentId?: string;
+            };
+            locale?: string;
+            localizations?: {
+                id?: string | number;
+                documentId?: string;
             }[];
         };
         PageResponse: {
@@ -4347,7 +4357,7 @@ export interface components {
             id?: string | number;
             /** @enum {string} */
             __component?: "shared.rich-text";
-            body?: string;
+            body?: unknown;
         };
         SharedButtonLinkComponent: {
             id?: string | number;
@@ -4359,6 +4369,8 @@ export interface components {
             size?: "full" | "auto";
             /** @enum {string} */
             align?: "left" | "center" | "right";
+            /** @enum {string} */
+            variant?: "default" | "outline" | "link" | "secondary";
         };
         SharedMediaComponent: {
             id?: string | number;
@@ -4424,6 +4436,8 @@ export interface components {
             /** @enum {string} */
             __component?: "shared.accordion";
             title?: string;
+            /** @enum {string} */
+            align?: "left" | "center" | "right";
             multiply_open?: boolean;
             items?: components["schemas"]["SharedAccordionItemComponent"][];
         };
