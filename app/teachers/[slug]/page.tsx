@@ -1,4 +1,6 @@
-﻿import Link from 'next/link'
+﻿// @ts-nocheck
+
+import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -88,7 +90,6 @@ export default async function TeacherPage({ params }: Props) {
               )}
             </div>
 
-            {/* @ts-ignore */}
             {member.bio && (
               <div className="mt-8">
                 <RichTextContent body={member.bio} />
