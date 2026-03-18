@@ -115,12 +115,19 @@ export default function ContactsSection({ data }: { data: ContactsSectionData })
 
         {/* Staff cards */}
         {data.contact_persons && data.contact_persons.length > 0 && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+          <div className="flex flex-wrap justify-center gap-5 mb-10">
             {data.contact_persons.map((member, i) => (
-              <PersonCard key={member.id} member={member} idx={i} />
+              <div key={member.id} className="w-full sm:w-[calc(50%-1.25rem)] lg:w-[calc(25%-1.25rem)]">
+                <PersonCard member={member} idx={i} />
+              </div>
             ))}
           </div>
         )}
+        {/* <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+            {data.contact_persons.map((member, i) => (
+              <PersonCard key={member.id} member={member} idx={i} />
+            ))}
+          </div> */}
 
         {/* Address + Map */}
         <div className="grid lg:grid-cols-5 gap-6">

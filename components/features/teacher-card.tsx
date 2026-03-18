@@ -11,7 +11,7 @@ export default function TeacherCard({ member }: { member: StuffMember }) {
   return (
     <article className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] overflow-hidden shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 group">
       <Link href={`/teachers/${member.slug}`} className="block">
-        <div className="relative overflow-hidden aspect-[3/2] bg-[hsl(80_30%_93%)]">
+        <div className="relative overflow-hidden aspect-[2/2.5] bg-[hsl(80_30%_93%)]">
           {imageUrl ? (
             <Image
               src={imageUrl}

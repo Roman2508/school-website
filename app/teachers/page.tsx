@@ -1,19 +1,19 @@
-﻿import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+﻿import type { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
-import TeacherCard from "@/components/features/teacher-card";
-import { getAllStaff } from "@/lib/api/staff";
+import TeacherCard from '@/components/features/teacher-card'
+import { getAllStaff } from '@/lib/api/staff'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Педагогічний склад",
-    description: "Вчителі та працівники школи.",
-  };
+    title: 'Педагогічний склад',
+    description: 'Вчителі та працівники школи.',
+  }
 }
 
 export default async function TeachersPage() {
-  const staff = await getAllStaff();
+  const staff = await getAllStaff()
 
   return (
     <>
@@ -31,11 +31,9 @@ export default async function TeachersPage() {
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <h1 className="font-heading text-3xl md:text-4xl font-black text-[hsl(0_0%_21%)]">
-                Педагогічний склад
-              </h1>
+              <h1 className="font-heading text-3xl md:text-4xl font-black text-[hsl(0_0%_21%)]">Педагогічний склад</h1>
               <span className="inline-flex items-center rounded-full bg-[hsl(80_30%_93%)] px-3 py-1 text-xs font-semibold text-[hsl(0_0%_40%)]">
-                {staff.length} працівників
+                Працівників: {staff.length}
               </span>
             </div>
           </div>
@@ -45,20 +43,18 @@ export default async function TeachersPage() {
       <section className="py-10 md:py-14">
         <div className="container">
           {staff.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {staff.map((member) => (
                 <TeacherCard key={member.id} member={member} />
               ))}
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] p-10 text-center shadow-card">
-              <p className="text-lg font-semibold text-[hsl(0_0%_21%)]">
-                Поки що немає працівників для відображення
-              </p>
+              <p className="text-lg font-semibold text-[hsl(0_0%_21%)]">Поки що немає працівників для відображення</p>
             </div>
           )}
         </div>
       </section>
     </>
-  );
+  )
 }

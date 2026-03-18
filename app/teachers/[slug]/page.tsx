@@ -47,7 +47,7 @@ export default async function TeacherPage({ params }: Props) {
           До всіх працівників
         </Link>
 
-        <div className="mt-8 grid items-start lg:grid-cols-[2fr_3fr] gap-10 lg:gap-12">
+        <div className="mt-8 grid items-start lg:grid-cols-[340px_3fr] gap-10 lg:gap-12">
           <div className="bg-white rounded-3xl border border-[hsl(80_15%_88%)] shadow-card overflow-hidden min-[500px]:w-90  lg:w-full block lg:sticky lg:top-36">
             {imageUrl ? (
               <Image
@@ -55,11 +55,11 @@ export default async function TeacherPage({ params }: Props) {
                 alt={member.photo?.alternativeText ?? member.name}
                 width={600}
                 height={700}
-                className="w-full h-[360px] object-cover"
+                className="w-full h-[440px] object-cover"
                 priority
               />
             ) : (
-              <div className="w-full h-[360px] bg-[hsl(80_30%_93%)] flex items-center justify-center text-[hsl(84_55%_45%)] text-5xl font-heading font-black">
+              <div className="w-full h-[440px] bg-[hsl(80_30%_93%)] flex items-center justify-center text-[hsl(84_55%_45%)] text-5xl font-heading font-black">
                 T
               </div>
             )}
