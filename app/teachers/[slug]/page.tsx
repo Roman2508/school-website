@@ -1,38 +1,43 @@
-﻿import Link from 'next/link'
-import Image from 'next/image'
-import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { ArrowLeft, Mail, Phone } from 'lucide-react'
+﻿import Link from "next/link";
+import Image from "next/image";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { ArrowLeft, Mail, Phone } from "lucide-react";
 
-import { getStrapiMedia } from '@/lib/strapi'
-import { getStaffBySlug } from '@/lib/api/staff'
-import RichTextContent from '@/components/blocks/RichTextContent'
+import { getStrapiMedia } from "@/lib/strapi";
+import { getStaffBySlug } from "@/lib/api/staff";
+import RichTextContent from "@/components/blocks/RichTextContent";
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const member = await getStaffBySlug(slug)
+  const { slug } = await params;
+  const member = await getStaffBySlug(slug);
   if (!member) {
-    return { title: 'Вчитель' }
+    return { title: "Вчитель" };
   }
   return {
     title: member.name,
-    description: typeof member.bio === 'string' ? member.bio.slice(0, 160) : undefined,
-  }
+    description:
+      typeof member.bio === "string" ? member.bio.slice(0, 160) : undefined,
+  };
 }
 
 export default async function TeacherPage({ params }: Props) {
-  const { slug } = await params
-  const member = await getStaffBySlug(slug)
+  const { slug } = await params;
+  const member = await getStaffBySlug(slug);
 
   if (!member) {
-    notFound()
+    notFound();
   }
 
-  const imageUrl = getStrapiMedia(member.photo?.url)
+  const imageUrl = getStrapiMedia(member.photo?.url);
+  const bio =
+    typeof member.bio === "string" || Array.isArray(member.bio)
+      ? member.bio
+      : null;
 
   return (
     <section className="py-12 md:py-16">
@@ -67,13 +72,18 @@ export default async function TeacherPage({ params }: Props) {
             <h1 className="font-heading text-xl min-[500px]:text-2xl sm:text-3xl md:text-4xl font-black text-[hsl(0_0%_21%)]">
               {member.name}
             </h1>
-            {member.role && <p className="mt-2 text-lg text-[hsl(0_0%_40%)]">{member.role}</p>}
+            {member.role && (
+              <p className="mt-2 text-lg text-[hsl(0_0%_40%)]">{member.role}</p>
+            )}
 
             <div className="mt-6 space-y-2 text-sm text-[hsl(0_0%_40%)]">
               {member.email && (
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  <a href={`mailto:${member.email}`} className="hover:text-[hsl(84_55%_45%)] transition-colors">
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="hover:text-[hsl(84_55%_45%)] transition-colors"
+                  >
                     {member.email}
                   </a>
                 </div>
@@ -81,22 +91,24 @@ export default async function TeacherPage({ params }: Props) {
               {member.phone && (
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
-                  <a href={`tel:${member.phone}`} className="hover:text-[hsl(84_55%_45%)] transition-colors">
+                  <a
+                    href={`tel:${member.phone}`}
+                    className="hover:text-[hsl(84_55%_45%)] transition-colors"
+                  >
                     {member.phone}
                   </a>
                 </div>
               )}
             </div>
 
-            {/* @ts-ignore */}
-            {member.bio && (
+            {bio ? (
               <div className="mt-8">
-                <RichTextContent body={member.bio} />
+                <RichTextContent body={bio} />
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

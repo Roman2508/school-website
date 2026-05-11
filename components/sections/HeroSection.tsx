@@ -8,30 +8,30 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
   const imageUrl = getStrapiMedia(data.image?.url);
 
   return (
-    <section className="relative overflow-hidden bg-hero-gradient h-[calc(100dvh-116px)] flex flex-col justify-center">
+    <section className="relative overflow-hidden bg-hero-gradient min-h-[calc(100dvh-116px)] lg:h-[calc(100dvh-116px)] flex flex-col justify-center py-8 sm:py-10 lg:py-0">
       {/* Decorative blobs */}
       <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-[hsl(340_70%_92%)] opacity-60 blur-3xl pointer-events-none" />
       <div className="absolute top-20 right-1/3 w-64 h-64 rounded-full bg-[hsl(210_80%_92%)] opacity-50 blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-32 h-32 rounded-full bg-[hsl(84_40%_90%)] opacity-50 blur-3xl pointer-events-none" />
 
-      <div className="container relative z-10 py-4">
+      <div className="container relative z-10 py-6 sm:py-8 lg:py-4">
         {/* <div className="container relative z-10 py-16 md:py-24"> */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid justify-items-center gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-12 lg:justify-items-stretch lg:items-center">
           {/* Text */}
-          <div>
-            <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] mb-6 text-[hsl(0_0%_21%)]">
+          <div className="mx-auto flex max-w-xl flex-col items-center text-center lg:mx-0 lg:max-w-none lg:items-start lg:text-left">
+            <h1 className="font-heading text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black leading-[1.1] mb-5 sm:mb-6 text-[hsl(0_0%_21%)]">
               {formatRichText(data.title)}
             </h1>
 
             {data.subtitle && (
-              <p className="text-lg md:text-xl text-[hsl(0_0%_40%)] leading-relaxed mb-8 max-w-2xl">
+              <p className="text-base sm:text-lg md:text-xl text-[hsl(0_0%_40%)] leading-relaxed mb-7 sm:mb-8 max-w-2xl">
                 {data.subtitle}
               </p>
             )}
 
             {/* Buttons */}
             {data.buttons && data.buttons.length > 0 && (
-              <div className="flex flex-wrap gap-4 mb-10">
+              <div className="mb-8 sm:mb-10 flex flex-wrap justify-center gap-3 sm:gap-4 lg:justify-start">
                 {data.buttons.map((btn) => (
                   <Link
                     key={btn.id}
@@ -50,9 +50,18 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
 
             {/* Mini stats */}
             {data.stats && data.stats.length > 0 && (
-              <div className="flex flex-wrap gap-8">
+              <div className="flex flex-wrap justify-center gap-x-6 gap-y-4 sm:gap-8 lg:justify-start">
                 {data.stats.map((stat) => (
-                  <div key={stat.id} className={`text-${stat.align}`}>
+                  <div
+                    key={stat.id}
+                    className={`min-w-[110px] text-center ${
+                      stat.align === "left"
+                        ? "lg:text-left"
+                        : stat.align === "right"
+                        ? "lg:text-right"
+                        : "lg:text-center"
+                    }`}
+                  >
                     <div className="font-heading text-2xl font-black text-[hsl(84_55%_45%)]">
                       {stat.value}
                     </div>
@@ -67,15 +76,15 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
 
           {/* Image */}
           {imageUrl && (
-            <div className="flex justify-center">
-              <div className="relative">
+            <div className="flex w-full justify-center lg:justify-end">
+              <div className="relative w-full max-w-[220px] sm:max-w-[280px] md:max-w-[360px] lg:max-w-lg">
                 <div className="absolute inset-0 bg-[hsl(84_55%_45%/0.1)] rounded-3xl blur-2xl scale-95" />
                 <Image
                   src={imageUrl}
                   alt={data.image?.alternativeText ?? data.title}
                   width={560}
                   height={480}
-                  className="relative z-10 w-full max-w-md lg:max-w-lg animate-float object-contain"
+                  className="relative z-10 w-full animate-float object-contain"
                   priority
                 />
               </div>
@@ -86,7 +95,7 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
 
       {/* Scroll indicator */}
       {data.bottom_button_text && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[hsl(45_99%_47%)] rounded-full py-3 px-6 text-center">
+        <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 bg-[hsl(45_99%_47%)] rounded-full py-3 px-6 text-center md:block">
           <p className="text-sm font-heading font-semibold text-[hsl(0_0%_21%)]">
             {data.bottom_button_text} ⬇
           </p>

@@ -1,8 +1,11 @@
 import type { NextConfig } from "next"
 
+const isDev = process.env.NODE_ENV !== "production"
+
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: process.env.NODE_ENV !== "production",
+    unoptimized: isDev,
+    dangerouslyAllowLocalIP: isDev,
     remotePatterns: [
       {
         protocol: "http",
