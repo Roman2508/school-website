@@ -21,7 +21,7 @@ export default function RichTextBlock({ block, index = 0 }: Props) {
       transition={{ duration: 0.5, delay: index * 0.05 }}
       className="prose prose-green max-w-none text-foreground leading-relaxed
                  prose-headings:font-heading prose-headings:font-black prose-headings:text-foreground
-                 prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                 prose-a:text-primary prose-a:no-underline
                  prose-strong:text-foreground prose-li:marker:text-primary"
     >
       <RichTextContent body={block.body} />

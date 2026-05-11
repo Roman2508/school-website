@@ -28,13 +28,14 @@ function parseMonth(value?: string) {
   const [yearStr, monthStr] = value.split("-");
   const year = Number(yearStr);
   const month = Number(monthStr);
-  if (!year || month < 1 || month > 12) return { year: undefined, month: undefined };
+  if (!year || month < 1 || month > 12)
+    return { year: undefined, month: undefined };
   return { year, month };
 }
 
 function buildPageLink(
   page: number,
-  filters: { category?: string; month?: string }
+  filters: { category?: string; month?: string },
 ) {
   const params = new URLSearchParams();
   if (filters.category) params.set("category", filters.category);
@@ -49,7 +50,9 @@ export default async function NewsPage({ searchParams }: Props) {
   const categoryParam = Array.isArray(params.category)
     ? params.category[0]
     : params.category;
-  const monthParam = Array.isArray(params.month) ? params.month[0] : params.month;
+  const monthParam = Array.isArray(params.month)
+    ? params.month[0]
+    : params.month;
 
   const page = Math.max(1, Number(pageParam ?? 1) || 1);
   const selectedCategory =
@@ -74,7 +77,7 @@ export default async function NewsPage({ searchParams }: Props) {
   const adjustedStart = Math.max(1, pageEnd - 4);
   const pageNumbers = Array.from(
     { length: pageEnd - adjustedStart + 1 },
-    (_, i) => adjustedStart + i
+    (_, i) => adjustedStart + i,
   );
 
   return (
@@ -116,7 +119,6 @@ export default async function NewsPage({ searchParams }: Props) {
 
       <section className="py-10 md:py-14">
         <div className="container space-y-10">
-
           {posts.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {posts.map((post) => (

@@ -7,7 +7,7 @@ import { ReactNode } from 'react'
 const proseBase =
   'text-foreground leading-relaxed ' +
   '[&_p]:my-4 ' +
-  '[&_a]:text-[hsl(84_55%_45%)] [&_a]:underline-offset-4 hover:[&_a]:underline ' +
+  '[&_a]:text-[hsl(84_55%_45%)] [&_a]:no-underline [&_a]:underline-offset-4 [&_a:hover]:underline ' +
   '[&_strong]:font-extrabold [&_em]:italic [&_u]:underline ' +
   '[&_h1]:text-3xl [&_h1]:font-heading [&_h1]:font-black [&_h1]:mb-4 ' +
   '[&_h2]:text-2xl [&_h2]:font-heading [&_h2]:font-black [&_h2]:mb-3 ' +
@@ -28,7 +28,7 @@ export default function RichTextContent({ body }: { body?: unknown }) {
         <ReactMarkdown
           components={{
             a: ({ children, ...props }) => (
-              <a {...props} className="text-[hsl(84_55%_45%)] hover:underline">
+              <a {...props} className="text-[hsl(84_55%_45%)] no-underline underline-offset-4 hover:underline">
                 {children}
               </a>
             ),
@@ -60,7 +60,7 @@ export default function RichTextContent({ body }: { body?: unknown }) {
             </pre>
           ),
           link: ({ children, url }) => (
-            <a href={url} className="text-[hsl(84_55%_45%)] hover:underline">
+            <a href={url} className="text-[hsl(84_55%_45%)] no-underline underline-offset-4 hover:underline">
               {children}
             </a>
           ),

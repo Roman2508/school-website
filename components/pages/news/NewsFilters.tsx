@@ -94,3 +94,4 @@ export default function NewsFilters({ months, categories, selectedMonth, selecte
     </div>
   )
 }
+

@@ -10,7 +10,9 @@ export default function NewsCard({ post }: { post: NewsPost }) {
   const imageUrl = getStrapiMedia(post.main_photo?.url);
 
   return (
-    <article className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] overflow-hidden shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 group cursor-pointer">
+    <article 
+      className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] overflow-hidden shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 group cursor-pointer"
+    >
       <Link href={`/news/${post.slug}`}>
         <div className="relative overflow-hidden aspect-[3/2]">
           {imageUrl ? (
@@ -45,3 +47,4 @@ export default function NewsCard({ post }: { post: NewsPost }) {
     </article>
   );
 }
+
