@@ -61,7 +61,7 @@ export default function Header({ data }: { data: HeaderData }) {
       <div ref={topRef}>
         {data.announcement_bar_text && (
           <div className="bg-stats-gradient">
-            <div className="container flex gap-3 py-2 flex-row items-center justify-between">
+            <div className="container flex gap-3 py-0.5 flex-row items-center justify-between">
               <p className="min-w-0 flex-1 text-left text-[0.65rem] sm:text-sm font-medium text-white">
                 {data.announcement_bar_text}
               </p>
