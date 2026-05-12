@@ -1,9 +1,17 @@
 import { fetchStrapi } from "@/lib/strapi";
 import type { Category, NewsPost, StrapiListResponse } from "@/types/strapi";
 
+const NEWS_POST_POPULATE = [
+  "category",
+  "main_photo",
+  "photos",
+]
+  .map((path, index) => `populate[${index}]=${path}`)
+  .join("&");
+
 export async function getLatestNews(limit = 3): Promise<NewsPost[]> {
   const res = await fetchStrapi<StrapiListResponse<NewsPost>>(
-    `/news-posts?sort=date:desc&pagination[limit]=${limit}&populate=*&publicationState=live`
+    `/news-posts?sort=date:desc&pagination[limit]=${limit}&${NEWS_POST_POPULATE}&publicationState=live`
   );
   return res.data;
 }
@@ -27,7 +35,6 @@ export async function getNewsPage({
   params.set("sort", "date:desc");
   params.set("pagination[page]", page.toString());
   params.set("pagination[pageSize]", pageSize.toString());
-  params.set("populate", "*");
   params.set("publicationState", "live");
 
   if (category) {
@@ -42,18 +49,17 @@ export async function getNewsPage({
   }
 
   return fetchStrapi<StrapiListResponse<NewsPost>>(
-    `/news-posts?${params.toString()}`
+    `/news-posts?${params.toString()}&${NEWS_POST_POPULATE}`
   );
 }
 
 export async function getNewsBySlug(slug: string): Promise<NewsPost | null> {
   const params = new URLSearchParams();
   params.set("filters[slug][$eq]", slug);
-  params.set("populate", "*");
   params.set("publicationState", "live");
 
   const res = await fetchStrapi<StrapiListResponse<NewsPost>>(
-    `/news-posts?${params.toString()}`
+    `/news-posts?${params.toString()}&${NEWS_POST_POPULATE}`
   );
 
   return res.data[0] ?? null;

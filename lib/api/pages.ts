@@ -2,12 +2,14 @@ import { fetchStrapi } from '@/lib/strapi'
 import type { Page, StrapiListResponse } from '@/types/strapi'
 
 const PAGE_POPULATE = [
-  'populate[background_image][fields][0]=url',
-  'populate[background_image][fields][1]=alternativeText',
-  'populate[background_image][fields][2]=width',
-  'populate[background_image][fields][3]=height',
-  'populate[left_col_blocks][populate]=*',
-  'populate[right_col_blocks][populate]=*',
+  'populate[0]=background_image',
+  'populate[1]=parent_page',
+  'populate[2]=parent_page.parent_page',
+  'populate[3]=parent_page.parent_page.parent_page',
+  'populate[left_col_blocks][on][shared.accordion][populate][0]=items',
+  'populate[left_col_blocks][on][shared.media][populate][0]=file',
+  'populate[right_col_blocks][on][shared.accordion][populate][0]=items',
+  'populate[right_col_blocks][on][shared.media][populate][0]=file',
 ].join('&')
 
 async function fetchPageBySlug(slug: string, filter: '$eq' | '$eqi'): Promise<Page | null> {
