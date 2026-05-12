@@ -2,10 +2,9 @@ import { fetchStrapi } from '@/lib/strapi'
 import type { Page, StrapiListResponse } from '@/types/strapi'
 
 const PAGE_POPULATE = [
-  'populate[0]=background_image',
-  'populate[1]=parent_page',
-  'populate[2]=parent_page.parent_page',
-  'populate[3]=parent_page.parent_page.parent_page',
+  'populate[background_image]=true',
+  'populate[parent_page][populate][0]=parent_page',
+  'populate[parent_page][populate][parent_page][populate][0]=parent_page',
   'populate[left_col_blocks][on][shared.accordion][populate][0]=items',
   'populate[left_col_blocks][on][shared.media][populate][0]=file',
   'populate[right_col_blocks][on][shared.accordion][populate][0]=items',

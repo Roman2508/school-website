@@ -1,14 +1,14 @@
-import Image from "next/image";
-import Link from "next/link";
-import { getStrapiMedia } from "@/lib/strapi";
-import type { HeroSectionData } from "@/types/strapi";
-import { formatRichText } from "@/lib/utils";
+import Image from 'next/image'
+import Link from 'next/link'
+import { getStrapiMedia } from '@/lib/strapi'
+import type { HeroSectionData } from '@/types/strapi'
+import { formatRichText } from '@/lib/utils'
 
 export default function HeroSection({ data }: { data: HeroSectionData }) {
-  const imageUrl = getStrapiMedia(data.image?.url);
+  const imageUrl = getStrapiMedia(data.image?.url)
 
   return (
-    <section className="relative overflow-hidden bg-hero-gradient min-h-[calc(100dvh-116px)] flex flex-col justify-center py-8 sm:py-10 lg:py-12">
+    <section className="relative overflow-hidden bg-hero-gradient min-h-[calc(100dvh-145px)] flex flex-col justify-center pb-8 sm:pb-10 lg:pb-12">
       {/* Decorative blobs */}
       <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-[hsl(340_70%_92%)] opacity-60 blur-3xl pointer-events-none" />
       <div className="absolute top-20 right-1/3 w-64 h-64 rounded-full bg-[hsl(210_80%_92%)] opacity-50 blur-3xl pointer-events-none" />
@@ -16,7 +16,7 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
 
       <div className="container relative z-10 py-6 sm:py-8 lg:py-4">
         {/* <div className="container relative z-10 py-16 md:py-24"> */}
-        <div className="grid justify-items-center gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-12 lg:justify-items-stretch lg:items-center">
+        <div className="grid justify-items-center gap-0 lg:grid-cols-2 lg:gap-12 lg:justify-items-stretch lg:items-center">
           {/* Text */}
           <div className="mx-auto flex max-w-xl flex-col items-center text-center lg:mx-0 lg:max-w-none lg:items-start lg:text-left">
             <h1 className="font-heading text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black leading-[1.1] mb-5 sm:mb-6 text-[hsl(0_0%_21%)]">
@@ -37,9 +37,9 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
                     key={btn.id}
                     href={btn.link}
                     className={`inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 ${
-                      btn.button_type === "primary"
-                        ? "bg-[hsl(84_55%_45%)] text-white hover:bg-[hsl(84_55%_38%)] shadow-[0_4px_14px_hsl(84_55%_45%/0.3)] hover:shadow-[0_6px_20px_hsl(84_55%_45%/0.4)] hover:-translate-y-0.5"
-                        : "border-2 border-[hsl(84_55%_45%)] text-[hsl(84_55%_45%)] hover:bg-[hsl(80_30%_93%)] hover:-translate-y-0.5"
+                      btn.button_type === 'primary'
+                        ? 'bg-[hsl(84_55%_45%)] text-white hover:bg-[hsl(84_55%_38%)] shadow-[0_4px_14px_hsl(84_55%_45%/0.3)] hover:shadow-[0_6px_20px_hsl(84_55%_45%/0.4)] hover:-translate-y-0.5'
+                        : 'border-2 border-[hsl(84_55%_45%)] text-[hsl(84_55%_45%)] hover:bg-[hsl(80_30%_93%)] hover:-translate-y-0.5'
                     }`}
                   >
                     {btn.text}
@@ -55,19 +55,15 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
                   <div
                     key={stat.id}
                     className={`min-w-[110px] text-center ${
-                      stat.align === "left"
-                        ? "lg:text-left"
-                        : stat.align === "right"
-                        ? "lg:text-right"
-                        : "lg:text-center"
+                      stat.align === 'left'
+                        ? 'lg:text-left'
+                        : stat.align === 'right'
+                          ? 'lg:text-right'
+                          : 'lg:text-center'
                     }`}
                   >
-                    <div className="font-heading text-2xl font-black text-[hsl(84_55%_45%)]">
-                      {stat.value}
-                    </div>
-                    <div className="text-sm text-[hsl(0_0%_40%)]">
-                      {stat.text}
-                    </div>
+                    <div className="font-heading text-2xl font-black text-[hsl(84_55%_45%)]">{stat.value}</div>
+                    <div className="text-sm text-[hsl(0_0%_40%)]">{stat.text}</div>
                   </div>
                 ))}
               </div>
@@ -76,7 +72,7 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
 
           {/* Image */}
           {imageUrl && (
-            <div className="flex w-full justify-center lg:justify-end">
+            <div className="hidden sm:flex w-full justify-center lg:justify-end">
               <div className="relative w-full max-w-[220px] sm:max-w-[280px] md:max-w-[360px] lg:max-w-lg">
                 <div className="absolute inset-0 bg-[hsl(84_55%_45%/0.1)] rounded-3xl blur-2xl scale-95" />
                 <Image
@@ -96,11 +92,9 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
       {/* Scroll indicator */}
       {data.bottom_button_text && (
         <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 bg-[hsl(45_99%_47%)] rounded-full py-3 px-6 text-center md:block">
-          <p className="text-sm font-heading font-semibold text-[hsl(0_0%_21%)]">
-            {data.bottom_button_text} ⬇
-          </p>
+          <p className="text-sm font-heading font-semibold text-[hsl(0_0%_21%)]">{data.bottom_button_text} ⬇</p>
         </div>
       )}
     </section>
-  );
+  )
 }
