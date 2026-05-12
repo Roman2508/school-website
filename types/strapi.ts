@@ -263,7 +263,7 @@ export interface StrapiListResponse<T> {
 export interface SharedRichText {
   __component: "shared.rich-text";
   id: number;
-  body?: string | null;
+  body?: unknown | null;
 }
 
 export interface SharedButtonLink {

@@ -5,10 +5,14 @@ const PAGE_POPULATE = [
   'populate[background_image]=true',
   'populate[parent_page][populate][0]=parent_page',
   'populate[parent_page][populate][parent_page][populate][0]=parent_page',
-  'populate[left_col_blocks][on][shared.accordion][populate][0]=items',
-  'populate[left_col_blocks][on][shared.media][populate][0]=file',
-  'populate[right_col_blocks][on][shared.accordion][populate][0]=items',
-  'populate[right_col_blocks][on][shared.media][populate][0]=file',
+  'populate[left_col_blocks][on][shared.rich-text][populate]=*',
+  'populate[left_col_blocks][on][shared.button-link][populate]=*',
+  'populate[left_col_blocks][on][shared.media][populate]=*',
+  'populate[left_col_blocks][on][shared.accordion][populate]=*',
+  'populate[right_col_blocks][on][shared.rich-text][populate]=*',
+  'populate[right_col_blocks][on][shared.button-link][populate]=*',
+  'populate[right_col_blocks][on][shared.media][populate]=*',
+  'populate[right_col_blocks][on][shared.accordion][populate]=*',
 ].join('&')
 
 async function fetchPageBySlug(slug: string, filter: '$eq' | '$eqi'): Promise<Page | null> {
