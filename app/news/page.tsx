@@ -1,84 +1,68 @@
-﻿import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+﻿import Link from 'next/link'
+import type { Metadata } from 'next'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 
-import NewsCard from "@/components/features/news-card";
-import NewsFilters from "@/components/pages/news/NewsFilters";
-import {
-  getNewsArchiveMonths,
-  getNewsCategories,
-  getNewsPage,
-} from "@/lib/api/news";
+import NewsCard from '@/components/features/news-card'
+import NewsFilters from '@/components/pages/news/NewsFilters'
+import { getNewsPage, getNewsCategories, getNewsArchiveMonths } from '@/lib/api/news'
 
 interface Props {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Новини",
-    description: "Останні новини та оголошення школи.",
-  };
+    title: 'Новини',
+    description: 'Останні новини та оголошення школи.',
+  }
 }
 
 function parseMonth(value?: string) {
-  if (!value) return { year: undefined, month: undefined };
-  const match = /^\d{4}-\d{2}$/.test(value);
-  if (!match) return { year: undefined, month: undefined };
-  const [yearStr, monthStr] = value.split("-");
-  const year = Number(yearStr);
-  const month = Number(monthStr);
-  if (!year || month < 1 || month > 12)
-    return { year: undefined, month: undefined };
-  return { year, month };
+  if (!value) return { year: undefined, month: undefined }
+  const match = /^\d{4}-\d{2}$/.test(value)
+  if (!match) return { year: undefined, month: undefined }
+  const [yearStr, monthStr] = value.split('-')
+  const year = Number(yearStr)
+  const month = Number(monthStr)
+  if (!year || month < 1 || month > 12) return { year: undefined, month: undefined }
+  return { year, month }
 }
 
-function buildPageLink(
-  page: number,
-  filters: { category?: string; month?: string },
-) {
-  const params = new URLSearchParams();
-  if (filters.category) params.set("category", filters.category);
-  if (filters.month) params.set("month", filters.month);
-  params.set("page", page.toString());
-  return `/news?${params.toString()}`;
+function buildPageLink(page: number, filters: { category?: string; month?: string }) {
+  const params = new URLSearchParams()
+  if (filters.category) params.set('category', filters.category)
+  if (filters.month) params.set('month', filters.month)
+  params.set('page', page.toString())
+  return `/news?${params.toString()}`
 }
 
 export default async function NewsPage({ searchParams }: Props) {
-  const params = await searchParams;
-  const pageParam = Array.isArray(params.page) ? params.page[0] : params.page;
-  const categoryParam = Array.isArray(params.category)
-    ? params.category[0]
-    : params.category;
-  const monthParam = Array.isArray(params.month)
-    ? params.month[0]
-    : params.month;
+  const params = await searchParams
+  const pageParam = Array.isArray(params.page) ? params.page[0] : params.page
+  const categoryParam = Array.isArray(params.category) ? params.category[0] : params.category
+  const monthParam = Array.isArray(params.month) ? params.month[0] : params.month
 
-  const page = Math.max(1, Number(pageParam ?? 1) || 1);
-  const selectedCategory =
-    typeof categoryParam === "string" ? categoryParam : undefined;
-  const selectedMonth = typeof monthParam === "string" ? monthParam : undefined;
+  const page = Math.max(1, Number(pageParam ?? 1) || 1)
+  const selectedCategory = typeof categoryParam === 'string' ? categoryParam : undefined
+  const selectedMonth = typeof monthParam === 'string' ? monthParam : undefined
 
-  const { year, month } = parseMonth(selectedMonth);
+  const { year, month } = parseMonth(selectedMonth)
 
   const [newsResponse, categories, months] = await Promise.all([
     getNewsPage({ page, pageSize: 9, category: selectedCategory, year, month }),
     getNewsCategories(),
     getNewsArchiveMonths(),
-  ]);
+  ])
 
-  const posts = newsResponse.data ?? [];
-  const pagination = newsResponse.meta.pagination;
-  const totalPages = Math.max(1, pagination.pageCount ?? 1);
-  const totalItems = pagination.total ?? posts.length;
+  const posts = newsResponse.data ?? []
+  const pagination = newsResponse.meta.pagination
+  const totalPages = Math.max(1, pagination.pageCount ?? 1)
+  const totalItems = pagination.total ?? posts.length
 
-  const pageStart = Math.max(1, page - 2);
-  const pageEnd = Math.min(totalPages, pageStart + 4);
-  const adjustedStart = Math.max(1, pageEnd - 4);
-  const pageNumbers = Array.from(
-    { length: pageEnd - adjustedStart + 1 },
-    (_, i) => adjustedStart + i,
-  );
+  const pageStart = Math.max(1, page - 2)
+  const pageEnd = Math.min(totalPages, pageStart + 4)
+  const adjustedStart = Math.max(1, pageEnd - 4)
+  const pageNumbers = Array.from({ length: pageEnd - adjustedStart + 1 }, (_, i) => adjustedStart + i)
 
   return (
     <>
@@ -96,9 +80,7 @@ export default async function NewsPage({ searchParams }: Props) {
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <h1 className="font-heading text-3xl md:text-4xl font-black text-[hsl(0_0%_21%)]">
-                Всі новини
-              </h1>
+              <h1 className="font-heading text-3xl md:text-4xl font-black text-[hsl(0_0%_21%)]">Всі новини</h1>
               <span className="inline-flex items-center rounded-full bg-[hsl(80_30%_93%)] px-3 py-1 text-xs font-semibold text-[hsl(0_0%_40%)]">
                 Новин: {totalItems}
               </span>
@@ -127,12 +109,8 @@ export default async function NewsPage({ searchParams }: Props) {
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] p-10 text-center shadow-card">
-              <p className="text-lg font-semibold text-[hsl(0_0%_21%)]">
-                Новин за вибраними фільтрами не знайдено
-              </p>
-              <p className="mt-2 text-[hsl(0_0%_40%)]">
-                Спробуйте змінити місяць або категорію.
-              </p>
+              <p className="text-lg font-semibold text-[hsl(0_0%_21%)]">Новин за вибраними фільтрами не знайдено</p>
+              <p className="mt-2 text-[hsl(0_0%_40%)]">Спробуйте змінити місяць або категорію.</p>
               <Link
                 href="/news"
                 className="inline-flex items-center gap-2 text-[hsl(84_55%_45%)] font-semibold hover:underline underline-offset-4 mt-4 cursor-pointer"
@@ -155,8 +133,8 @@ export default async function NewsPage({ searchParams }: Props) {
                   })}
                   className={`px-4 py-2 rounded-xl border text-sm font-semibold transition-colors ${
                     page === 1
-                      ? "pointer-events-none text-[hsl(0_0%_60%)] bg-[hsl(80_30%_93%)]"
-                      : "bg-white hover:bg-[hsl(80_30%_93%)] text-[hsl(0_0%_21%)]"
+                      ? 'pointer-events-none text-[hsl(0_0%_60%)] bg-[hsl(80_30%_93%)]'
+                      : 'bg-white hover:bg-[hsl(80_30%_93%)] text-[hsl(0_0%_21%)]'
                   }`}
                 >
                   Назад
@@ -170,8 +148,8 @@ export default async function NewsPage({ searchParams }: Props) {
                     })}
                     className={`px-4 py-2 rounded-xl border text-sm font-semibold transition-colors ${
                       pageNum === page
-                        ? "bg-[hsl(84_55%_45%)] text-white border-[hsl(84_55%_45%)]"
-                        : "bg-white hover:bg-[hsl(80_30%_93%)] text-[hsl(0_0%_21%)]"
+                        ? 'bg-[hsl(84_55%_45%)] text-white border-[hsl(84_55%_45%)]'
+                        : 'bg-white hover:bg-[hsl(80_30%_93%)] text-[hsl(0_0%_21%)]'
                     }`}
                   >
                     {pageNum}
@@ -184,8 +162,8 @@ export default async function NewsPage({ searchParams }: Props) {
                   })}
                   className={`px-4 py-2 rounded-xl border text-sm font-semibold transition-colors ${
                     page === totalPages
-                      ? "pointer-events-none text-[hsl(0_0%_60%)] bg-[hsl(80_30%_93%)]"
-                      : "bg-white hover:bg-[hsl(80_30%_93%)] text-[hsl(0_0%_21%)]"
+                      ? 'pointer-events-none text-[hsl(0_0%_60%)] bg-[hsl(80_30%_93%)]'
+                      : 'bg-white hover:bg-[hsl(80_30%_93%)] text-[hsl(0_0%_21%)]'
                   }`}
                 >
                   Далі
@@ -196,5 +174,5 @@ export default async function NewsPage({ searchParams }: Props) {
         </div>
       </section>
     </>
-  );
+  )
 }

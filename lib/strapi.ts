@@ -1,8 +1,3 @@
-/**
- * Strapi REST API client for the school website.
- * Uses server-side fetch with optional API token auth.
- */
-
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
 

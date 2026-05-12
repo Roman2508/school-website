@@ -1,19 +1,19 @@
-﻿import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+﻿import Link from 'next/link'
+import type { Metadata } from 'next'
+import { ArrowLeft } from 'lucide-react'
 
-import TeacherCard from "@/components/features/teacher-card";
-import { getAllStaff } from "@/lib/api/staff";
+import { getAllStaff } from '@/lib/api/staff'
+import TeacherCard from '@/components/features/teacher-card'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Педагогічний склад",
-    description: "Вчителі та працівники школи.",
-  };
+    title: 'Педагогічний склад',
+    description: 'Вчителі та працівники школи.',
+  }
 }
 
 export default async function TeachersPage() {
-  const staff = await getAllStaff();
+  const staff = await getAllStaff()
 
   return (
     <>
@@ -31,9 +31,7 @@ export default async function TeachersPage() {
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <h1 className="font-heading text-3xl md:text-4xl font-black text-[hsl(0_0%_21%)]">
-                Педагогічний склад
-              </h1>
+              <h1 className="font-heading text-3xl md:text-4xl font-black text-[hsl(0_0%_21%)]">Педагогічний склад</h1>
               <span className="inline-flex items-center rounded-full bg-[hsl(80_30%_93%)] px-3 py-1 text-xs font-semibold text-[hsl(0_0%_40%)]">
                 {staff.length} працівників
               </span>
@@ -52,13 +50,11 @@ export default async function TeachersPage() {
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-[hsl(80_15%_88%)] p-10 text-center shadow-card">
-              <p className="text-lg font-semibold text-[hsl(0_0%_21%)]">
-                Поки що немає працівників для відображення
-              </p>
+              <p className="text-lg font-semibold text-[hsl(0_0%_21%)]">Поки що немає працівників для відображення</p>
             </div>
           )}
         </div>
       </section>
     </>
-  );
+  )
 }

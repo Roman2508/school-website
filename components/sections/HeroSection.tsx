@@ -8,7 +8,7 @@ export default function HeroSection({ data }: { data: HeroSectionData }) {
   const imageUrl = getStrapiMedia(data.image?.url);
 
   return (
-    <section className="relative overflow-hidden bg-hero-gradient min-h-[calc(100dvh-116px)] lg:h-[calc(100dvh-116px)] flex flex-col justify-center py-8 sm:py-10 lg:py-0">
+    <section className="relative overflow-hidden bg-hero-gradient min-h-[calc(100dvh-116px)] flex flex-col justify-center py-8 sm:py-10 lg:py-12">
       {/* Decorative blobs */}
       <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-[hsl(340_70%_92%)] opacity-60 blur-3xl pointer-events-none" />
       <div className="absolute top-20 right-1/3 w-64 h-64 rounded-full bg-[hsl(210_80%_92%)] opacity-50 blur-3xl pointer-events-none" />

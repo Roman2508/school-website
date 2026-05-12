@@ -1,5 +1,5 @@
-﻿import type { Metadata } from "next";
-import Link from "next/link";
+﻿import Link from "next/link";
+import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 
 import RichTextContent from "@/components/blocks/RichTextContent";

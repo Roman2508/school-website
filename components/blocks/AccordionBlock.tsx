@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BlocksRenderer } from '@strapi/blocks-react-renderer'
-import type { SharedAccordion } from '@/types/strapi'
+
 import RichTextContent from './RichTextContent'
+import type { SharedAccordion } from '@/types/strapi'
 
 interface Props {
   block: SharedAccordion
@@ -89,7 +89,6 @@ export default function AccordionBlock({ block, index = 0 }: Props) {
                                     prose-a:text-primary prose-strong:text-foreground"
                     >
                       <RichTextContent body={item.body as any} />
-                      {/* <BlocksRenderer content={item.body as any} /> */}
                     </div>
                   </motion.div>
                 )}
